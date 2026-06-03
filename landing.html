@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="Alsi - Affordable AI chat for India. Starting at ₹399/month. Powered by Claude. No international card needed."/>
+<title>Alsi — Your AI Companion. Built for India.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #04050a;
+  --surface: #0c0d16;
+  --surface2: #13141f;
+  --surface3: #191a28;
+  --border: #1e2030;
+  --border2: #252638;
+  --accent: #00d4ff;
+  --accent2: #7b5ea7;
+  --accent3: #ff6b6b;
+  --accent-glow: rgba(0,212,255,0.18);
+  --text: #e8eaf6;
+  --text2: #9ca0bb;
+  --dim: #5a5f7a;
+  --success: #00e676;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { 
+  background: var(--bg); 
+  color: var(--text); 
+  font-family: 'Cabinet Grotesk', sans-serif; 
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ─── BACKGROUND ─────────────────────────────────── */
+.bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.orb { position: absolute; border-radius: 50%; filter: blur(100px); }
+.orb-1 { width: 700px; height: 700px; background: radial-gradient(circle, rgba(0,212,255,0.12), transparent 70%); top: -15%; left: -10%; animation: drift1 22s ease-in-out infinite alternate; }
+.orb-2 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(123,94,167,0.15), transparent 70%); bottom: 10%; right: -8%; animation: drift2 28s ease-in-out infinite alternate; }
+.orb-3 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(255,107,107,0.08), transparent 70%); top: 50%; left: 45%; animation: drift1 18s ease-in-out infinite alternate-reverse; }
+@keyframes drift1 { 0%{transform:translate(0,0)} 100%{transform:translate(40px,50px)} }
+@keyframes drift2 { 0%{transform:translate(0,0)} 100%{transform:translate(-50px,30px)} }
+
+.bg-grid { 
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; 
+  background-image: linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px); 
+  background-size: 60px 60px; 
+}
+
+/* ─── LAYOUT ─────────────────────────────────── */
+section, nav, footer { position: relative; z-index: 1; }
+
+/* ─── NAV ─────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 60px;
+  background: rgba(4,5,10,0.7);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,212,255,0.08);
+  transition: all 0.3s;
+}
+
+@media (max-width: 768px) {
+  nav { padding: 14px 24px; }
+}
+
+.nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.nav-logo-mark {
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Clash Display', sans-serif; font-weight: 700; font-size: 18px; color: #fff;
+  box-shadow: 0 0 24px rgba(0,212,255,0.35);
+  animation: logo-pulse 3s ease-in-out infinite;
+}
+@keyframes logo-pulse { 0%,100%{box-shadow:0 0 24px rgba(0,212,255,0.35)} 50%{box-shadow:0 0 40px rgba(0,212,255,0.6)} }
+
+.nav-logo-text { font-family: 'Clash Display', sans-serif; font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
+.nav-logo-text span { color: var(--accent); }
+
+.nav-links { display: flex; align-items: center; gap: 36px; }
+.nav-links a { font-size: 14px; font-weight: 500; color: var(--text2); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--accent); }
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+}
+
+.nav-cta { display: flex; align-items: center; gap: 12px; }
+
+.btn-ghost {
+  padding: 9px 20px; border-radius: 10px;
+  border: 1px solid var(--border2); background: transparent;
+  color: var(--text2); font-family: 'Cabinet Grotesk', sans-serif; font-size: 14px; font-weight: 500;
+  cursor: pointer; text-decoration: none; transition: all 0.2s;
+}
+.btn-ghost:hover { border-color: rgba(0,212,255,0.4); color: var(--accent); }
+
+.btn-primary {
+  padding: 10px 24px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border: none; color: #fff; font-family: 'Cabinet Grotesk', sans-serif; font-size: 14px; font-weight: 600;
+  cursor: pointer; text-decoration: none; transition: all 0.25s;
+  box-shadow: 0 0 20px rgba(0,212,255,0.25);
+  position: relative; overflow: hidden;
+}
+.btn-primary::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s;
+}
+.btn-primary:hover::before { transform: translateX(100%); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 32px rgba(0,212,255,0.45); }
+
+/* ─── HERO ─────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+  padding: 140px 40px 100px;
+  gap: 0;
+}
+
+@media (max-width: 768px) {
+  .hero { padding: 120px 24px 80px; }
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 16px; border-radius: 100px;
+  background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.25);
+  font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: 0.8px;
+  text-transform: uppercase; margin-bottom: 28px;
+  animation: slideInDown 0.7s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+@keyframes slideInDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.badge-dot { width: 6px; height: 6px; background: var(--success); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.2);opacity:0.6} }
+
+.hero h1 {
+  font-family: 'Clash Display', sans-serif;
+  font-size: clamp(48px, 8vw, 88px);
+  font-weight: 700; line-height: 1.05; letter-spacing: -2px;
+  margin-bottom: 24px;
+  animation: slideInDown 0.8s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+}
+
+.hero h1 .line1 { display: block; color: var(--text); }
+.hero h1 .line2 {
+  display: block;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 50%, var(--accent3) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.1); }
+}
+
+.hero-sub {
+  font-size: 18px; color: var(--text2); max-width: 580px; line-height: 1.75;
+  margin-bottom: 40px;
+  animation: slideInDown 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s both;
+}
+
+@media (max-width: 768px) {
+  .hero-sub { font-size: 16px; margin-bottom: 32px; }
+}
+
+.hero-actions {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center;
+  margin-bottom: 64px;
+  animation: slideInDown 0.8s cubic-bezier(0.16,1,0.3,1) 0.3s both;
+}
+
+@media (max-width: 768px) {
+  .hero-actions { flex-direction: column; gap: 12px; }
+}
+
+.btn-hero {
+  padding: 16px 40px; border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border: none; color: #fff; font-family: 'Cabinet Grotesk', sans-serif; font-size: 16px; font-weight: 700;
+  cursor: pointer; text-decoration: none; transition: all 0.25s;
+  box-shadow: 0 0 40px rgba(0,212,255,0.3), 0 4px 20px rgba(0,0,0,0.3);
+  display: inline-flex; align-items: center; gap: 10px;
+}
+
+.btn-hero:hover { 
+  transform: translateY(-3px); 
+  box-shadow: 0 0 60px rgba(0,212,255,0.5), 0 12px 40px rgba(0,0,0,0.4); 
+}
+
+@media (max-width: 768px) {
+  .btn-hero { padding: 14px 32px; font-size: 15px; width: 100%; justify-content: center; }
+}
+
+.btn-hero-outline {
+  padding: 16px 32px; border-radius: 14px;
+  background: rgba(255,255,255,0.03); border: 1.5px solid var(--border2);
+  color: var(--text2); font-family: 'Cabinet Grotesk', sans-serif; font-size: 16px; font-weight: 600;
+  cursor: pointer; text-decoration: none; transition: all 0.25s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+
+.btn-hero-outline:hover { 
+  background: rgba(0,212,255,0.05); 
+  border-color: rgba(0,212,255,0.35); 
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .btn-hero-outline { padding: 14px 28px; font-size: 15px; width: 100%; justify-content: center; }
+}
+
+/* Mock chat window */
+.hero-visual {
+  width: 100%; max-width: 800px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 40px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,212,255,0.08), 0 0 80px rgba(0,212,255,0.06);
+  animation: slideInDown 0.9s cubic-bezier(0.16,1,0.3,1) 0.4s both;
+}
+
+.visual-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(12,13,22,0.95);
+}
+
+.visual-dots { display: flex; gap: 8px; }
+.visual-dots span { width: 12px; height: 12px; border-radius: 50%; }
+.d1 { background: #ff5f57; }
+.d2 { background: #ffbd2e; }
+.d3 { background: #28c840; }
+
+.visual-title { font-size: 13px; font-weight: 600; color: var(--text); }
+.visual-body {
+  padding: 24px;
+  display: flex; flex-direction: column; gap: 16px;
+  height: 280px;
+}
+
+.message-bot {
+  background: var(--surface2);
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text2);
+  max-width: 75%;
+  animation: fadeInUp 0.6s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.message-bot:nth-child(1) { animation-delay: 0.1s; }
+.message-bot:nth-child(2) { animation-delay: 0.2s; }
+
+.message-user {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  padding: 14px 18px;
+  border-radius: 14px;
+  font-size: 13px;
+  color: #fff;
+  max-width: 75%;
+  margin-left: auto;
+  animation: fadeInUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.3s both;
+}
+
+/* ─── FEATURES ─────────────────────────────────── */
+#features {
+  padding: 120px 60px;
+  background: var(--bg);
+}
+
+@media (max-width: 768px) {
+  #features { padding: 80px 24px; }
+}
+
+.section-label {
+  font-size: 12px; font-weight: 700; letter-spacing: 2px;
+  color: var(--accent); text-transform: uppercase;
+  text-align: center; margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 700; line-height: 1.1; letter-spacing: -1px;
+  text-align: center; margin-bottom: 60px;
+  background: linear-gradient(135deg, var(--text) 40%, var(--accent));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.features-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;
+  max-width: 1200px; margin: 0 auto;
+}
+
+.feat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px;
+  transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+  position: relative; overflow: hidden;
+}
+
+.feat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(0,212,255,0.1), transparent 80%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.feat-card:hover {
+  border-color: rgba(0,212,255,0.3);
+  box-shadow: 0 20px 60px rgba(0,212,255,0.1), 0 0 40px rgba(0,212,255,0.05);
+  transform: translateY(-8px);
+}
+
+.feat-card:hover::before { opacity: 1; }
+
+.feat-icon {
+  font-size: 40px;
+  margin-bottom: 18px;
+  display: block;
+}
+
+.feat-card h3 {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 22px; font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+.feat-card p {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.7;
+}
+
+/* ─── PRICING ─────────────────────────────────── */
+#pricing {
+  padding: 120px 60px;
+  background: radial-gradient(circle at center, rgba(0,212,255,0.03), transparent);
+}
+
+@media (max-width: 768px) {
+  #pricing { padding: 80px 24px; }
+}
+
+.pricing-note {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text2);
+  margin-bottom: 60px;
+  padding: 12px 24px;
+  background: rgba(0,212,255,0.05);
+  border: 1px solid rgba(0,212,255,0.1);
+  border-radius: 12px;
+  display: inline-block;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+.plans-container {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px;
+  max-width: 1100px; margin: 0 auto;
+}
+
+.plan-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 40px 32px;
+  transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.plan-card.pro {
+  border: 2px solid var(--accent);
+  background: linear-gradient(135deg, rgba(0,212,255,0.05), rgba(123,94,167,0.05));
+  transform: scale(1.02);
+}
+
+.plan-card:hover {
+  border-color: rgba(0,212,255,0.3);
+  box-shadow: 0 20px 60px rgba(0,212,255,0.1);
+  transform: translateY(-8px);
+}
+
+.plan-card.pro:hover {
+  box-shadow: 0 20px 80px rgba(0,212,255,0.2);
+}
+
+.plan-badge {
+  display: inline-block;
+  font-size: 12px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: rgba(0,212,255,0.1);
+  color: var(--accent);
+  margin-bottom: 20px;
+  width: fit-content;
+}
+
+.badge-pro {
+  background: rgba(0,212,255,0.15);
+  color: var(--accent);
+  border: 1px solid rgba(0,212,255,0.3);
+}
+
+.plan-price {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 12px;
+  letter-spacing: -1px;
+}
+
+.plan-price span {
+  font-size: 16px;
+  color: var(--text2);
+  font-weight: 500;
+}
+
+.plan-desc {
+  font-size: 14px;
+  color: var(--text2);
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.plan-features {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.plan-feat {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text2);
+}
+
+.plan-feat svg {
+  width: 18px;
+  height: 18px;
+  color: var(--success);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.feat-check {
+  stroke: var(--success);
+}
+
+.btn-plan-free,
+.btn-plan-pro {
+  width: 100%;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-plan-free {
+  background: rgba(0,212,255,0.1);
+  color: var(--accent);
+  border: 1px solid rgba(0,212,255,0.2);
+}
+
+.btn-plan-free:hover {
+  background: rgba(0,212,255,0.15);
+  border-color: rgba(0,212,255,0.35);
+}
+
+.btn-plan-pro {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  box-shadow: 0 0 20px rgba(0,212,255,0.25);
+}
+
+.btn-plan-pro:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 40px rgba(0,212,255,0.35);
+}
+
+/* ─── TESTIMONIALS ─────────────────────────────────── */
+#testimonials {
+  padding: 120px 60px;
+  background: var(--bg);
+}
+
+@media (max-width: 768px) {
+  #testimonials { padding: 80px 24px; }
+}
+
+.testimonials-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 60px;
+}
+
+.testi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px;
+  transition: all 0.3s;
+}
+
+.testi-card:hover {
+  border-color: rgba(0,212,255,0.3);
+  box-shadow: 0 20px 60px rgba(0,212,255,0.1);
+}
+
+.testi-stars {
+  color: var(--accent);
+  margin-bottom: 16px;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+.testi-text {
+  font-size: 16px;
+  color: var(--text2);
+  line-height: 1.8;
+  margin-bottom: 24px;
+  font-style: italic;
+}
+
+.testi-author {
+  display: flex;
+  gap: 12px;
+}
+
+.testi-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.testi-name {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.testi-role {
+  font-size: 13px;
+  color: var(--dim);
+}
+
+/* ─── CTA ─────────────────────────────────── */
+#cta {
+  padding: 120px 60px;
+  background: radial-gradient(ellipse at center, rgba(0,212,255,0.08), transparent);
+}
+
+@media (max-width: 768px) {
+  #cta { padding: 80px 24px; }
+}
+
+.cta-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cta-glow {
+  padding: 60px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(123,94,167,0.08));
+  border: 1px solid rgba(0,212,255,0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(0,212,255,0.1), transparent 70%);
+  pointer-events: none;
+}
+
+.cta-icon {
+  font-size: 48px;
+  margin-bottom: 24px;
+  display: block;
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.cta-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: clamp(36px, 5vw, 48px);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  color: var(--text);
+}
+
+.cta-sub {
+  font-size: 18px;
+  color: var(--text2);
+  margin-bottom: 36px;
+  line-height: 1.7;
+}
+
+.cta-note {
+  font-size: 13px;
+  color: var(--dim);
+  margin-top: 24px;
+  letter-spacing: 0.5px;
+}
+
+/* ─── FOOTER ─────────────────────────────────── */
+footer {
+  padding: 80px 60px 40px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+@media (max-width: 768px) {
+  footer { padding: 60px 24px 40px; }
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 80px;
+  margin-bottom: 60px;
+}
+
+@media (max-width: 768px) {
+  .footer-top { grid-template-columns: 1fr; gap: 40px; }
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.logo-desc {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.7;
+}
+
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 40px;
+}
+
+.footer-col h5 {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.footer-col a {
+  display: block;
+  font-size: 14px;
+  color: var(--text2);
+  text-decoration: none;
+  transition: color 0.2s;
+  margin-bottom: 10px;
+}
+
+.footer-col a:hover {
+  color: var(--accent);
+}
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--dim);
+}
+
+@media (max-width: 768px) {
+  .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+}
+
+.footer-heart {
+  color: var(--accent3);
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.2); }
+  50% { transform: scale(1); }
+}
+
+.status-green {
+  width: 7px;
+  height: 7px;
+  background: var(--success);
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ─── UTILITY ─────────────────────────────────── */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+
+@media (max-width: 768px) {
+  .container { padding: 0 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- BG CANVAS -->
+<div class="bg-canvas">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+<div class="bg-grid"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">A</div>
+    <span class="nav-logo-text">Als<span>i</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#testimonials">Reviews</a>
+  </div>
+  <div class="nav-cta">
+    <a href="alsi.html" class="btn-ghost">Open App</a>
+    <a href="alsi.html" class="btn-primary">Start Free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-badge">
+    <span class="badge-dot"></span>
+    India's #1 AI Chat App
+  </span>
+  <h1>
+    <span class="line1">Your AI Companion</span>
+    <span class="line2">Built for India</span>
+  </h1>
+  <p class="hero-sub">
+    Powerful Claude AI at ₹399/month. No international card needed. UPI, net banking, all payment modes welcome.
+  </p>
+  <div class="hero-actions">
+    <a href="alsi.html" class="btn-hero">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 3l14 9-14 9V3z"/></svg>
+      Start Chatting Free
+    </a>
+    <a href="#pricing" class="btn-hero-outline">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14m-7-7h14"/></svg>
+      See Plans
+    </a>
+  </div>
+  <div class="hero-visual">
+    <div class="visual-topbar">
+      <div class="visual-title">Alsi Chat</div>
+      <div class="visual-dots">
+        <span class="d1"></span>
+        <span class="d2"></span>
+        <span class="d3"></span>
+      </div>
+    </div>
+    <div class="visual-body">
+      <div class="message-bot">What would you like to know today?</div>
+      <div class="message-user">Tell me about sustainable technology</div>
+      <div class="message-bot">Sustainable technology focuses on minimizing environmental impact while maximizing efficiency...</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="container">
+    <div class="section-label">Why Alsi</div>
+    <h2 class="section-title">Built for Indian Users</h2>
+    <div class="features-grid">
+      <div class="feat-card">
+        <span class="feat-icon">₹</span>
+        <h3>Pricing Built for India</h3>
+        <p>₹399/month entry price. 10 free messages to try before paying. No hidden charges, just honest value.</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">🛡️</span>
+        <h3>Powered by Claude AI</h3>
+        <p>Anthropic's Claude model — one of the world's most capable and safe AI assistants available today.</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">💳</span>
+        <h3>Native Razorpay</h3>
+        <p>UPI, cards, net banking, all payment modes. No international card needed. Process payments in rupees directly.</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">⚡</span>
+        <h3>Production-Grade App</h3>
+        <p>Full-featured: streaming responses, voice input/output, image upload, persistent history, markdown rendering.</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">🎨</span>
+        <h3>Beautiful Dark Design</h3>
+        <p>Cyberpunk-inspired interface with cyan accents. Premium look that users actually enjoy spending time in.</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">🚀</span>
+        <h3>Fast & Reliable</h3>
+        <p>Hosted on Vercel. Claude streaming API for real-time responses. Zero-latency experience, built to scale.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container">
+    <div class="section-label">Plans & Pricing</div>
+    <h2 class="section-title">Simple, Transparent Pricing</h2>
+    <div class="pricing-note">All plans include free trial messages. Upgrade anytime, cancel anytime.</div>
+    <div class="plans-container">
+      <div class="plan-card">
+        <span class="plan-badge">Free</span>
+        <div class="plan-price">₹0</div>
+        <p class="plan-desc">Perfect to start. 10 free messages, then upgrade when you're ready.</p>
+        <div class="plan-features">
+          <div class="plan-feat">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            10 free messages
+          </div>
+          <div class="plan-feat">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            Full access to Claude
+          </div>
+          <div class="plan-feat">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            Chat history (session)
+          </div>
+          <div class="plan-feat">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="color:var(--dim)"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            <span style="color:var(--dim)">Unlimited messages</span>
+          </div>
+        </div>
+        <a href="alsi.html" class="btn-plan-free">Get Started</a>
+      </div>
+
+      <div class="plan-card pro">
+        <span class="plan-badge badge-pro">⚡ Pro</span>
+        <div class="plan-price">₹399 <span>/ month</span></div>
+        <p class="plan-desc">For power users. Unlimited messages + priority support. Best value for daily users.</p>
+        <div class="plan-features">
+          <div class="plan-feat">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            <strong>Unlimited messages</strong>
+          </div>
+          <div class="plan-feat">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            Priority AI responses
+          </div>
+          <div class="plan-feat">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            All core features unlocked
+          </div>
+          <div class="plan-feat">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            Pro badge in chat
+          </div>
+          <div class="plan-feat">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            Early access to new features
+          </div>
+        </div>
+        <a href="alsi.html#upgrade" class="btn-plan-pro">Upgrade to Pro →</a>
+      </div>
+
+      <div class="plan-card">
+        <span class="plan-badge">Yearly</span>
+        <div class="plan-price">₹3,999 <span>/ year</span></div>
+        <p class="plan-desc">Best value. Save 17% annually. Everything Pro + dedicated support.</p>
+        <div class="plan-features">
+          <div class="plan-feat">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            Unlimited messages
+          </div>
+          <div class="plan-feat">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            Priority support
+          </div>
+          <div class="plan-feat">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            All core features
+          </div>
+          <div class="plan-feat">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            Pro badge
+          </div>
+          <div class="plan-feat">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+            Early feature access
+          </div>
+        </div>
+        <a href="alsi.html#upgrade" class="btn-plan-pro">Choose Yearly →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="testimonials-inner">
+    <div class="section-label">Social Proof</div>
+    <h2 class="section-title">Loved by Thinkers & Builders</h2>
+    <div class="testimonials-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Alsi is the first AI chat app that actually feels premium. The design is incredible and the responses are lightning fast. No more bouncing between ChatGPT and other tools."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#00d4ff,#7b5ea7)">RK</div>
+          <div><div class="testi-name">Rohan Khanna</div><div class="testi-role">Product Designer</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"I use Alsi every single day for writing and research. It's replaced three other tools for me. The Pro plan is absolutely worth it, and paying in rupees is so much better."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#7b5ea7,#ff6b6b)">PS</div>
+          <div><div class="testi-name">Priya Sharma</div><div class="testi-role">Content Strategist</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Finally, an AI assistant with a UI that doesn't feel like 2012. Alsi is genuinely beautiful, incredibly useful, and affordable. This is the future of AI in India."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#ff6b6b,#f4c542)">AN</div>
+          <div><div class="testi-name">Arjun Nair</div><div class="testi-role">Software Engineer</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-inner">
+    <div class="cta-glow">
+      <span class="cta-icon">🤖</span>
+      <h2 class="cta-title">Ready to Chat?</h2>
+      <p class="cta-sub">Join thousands of curious Indian minds using Alsi. Start free — no signup needed. Upgrade anytime when you're ready.</p>
+      <a href="alsi.html" class="btn-hero" style="display:inline-flex; padding: 16px 48px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 3l14 9-14 9V3z"/></svg>
+        Start Chatting Now
+      </a>
+      <p class="cta-note">✓ Free forever · ✓ No credit card required · ✓ Upgrade anytime</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo" style="text-decoration:none">
+          <div class="nav-logo-mark" style="width:36px;height:36px;font-size:16px">A</div>
+          <span class="nav-logo-text" style="font-size:20px">Als<span>i</span></span>
+        </a>
+        <p class="logo-desc">Affordable, native AI companion for Indian users. Powered by Claude, built with love in India.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h5>Product</h5>
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#testimonials">Reviews</a>
+          <a href="alsi.html">Open App</a>
+        </div>
+        <div class="footer-col">
+          <h5>Support</h5>
+          <a href="mailto:heylistenagastya@gmail.com">Contact Us</a>
+          <a href="#">Help Center</a>
+          <a href="#">Status</a>
+        </div>
+        <div class="footer-col">
+          <h5>Legal</h5>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Refund Policy</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 Alsi. Made with <span class="footer-heart">♥</span> in India for India.</p>
+      <div class="footer-status"><span class="status-green"></span> All systems operational</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Smooth nav shadow on scroll
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (window.scrollY > 20) {
+    nav.style.background = 'rgba(4,5,10,0.95)';
+    nav.style.borderBottom = '1px solid rgba(0,212,255,0.12)';
+    nav.style.boxShadow = '0 8px 40px rgba(0,0,0,0.3)';
+  } else {
+    nav.style.background = 'rgba(4,5,10,0.7)';
+    nav.style.borderBottom = '1px solid rgba(0,212,255,0.08)';
+    nav.style.boxShadow = 'none';
+  }
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.feat-card, .plan-card, .testi-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(24px)';
+  el.style.transition = 'opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1)';
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>
