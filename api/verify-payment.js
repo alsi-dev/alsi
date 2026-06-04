@@ -15,7 +15,7 @@ module.exports = async function handler(req, res) {
   if (!PLANS[plan]) return res.status(400).json({ error: 'Invalid plan' });
 
   const body = razorpay_order_id + '|' + razorpay_payment_id;
-  const expected = crypto.createHmac('sha256', process.env.RAZORPAY_SECRET).update(body).digest('hex');
+  const expected = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET).update(body).digest('hex');
 
   if (expected !== razorpay_signature)
     return res.status(400).json({ error: 'Payment verification failed. Invalid signature.' });
