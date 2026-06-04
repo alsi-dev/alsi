@@ -15,14 +15,14 @@ module.exports = async function handler(req, res) {
 
   if (!PLANS[plan]) return res.status(400).json({ error: 'Invalid plan' });
 
-  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_SECRET) {
+  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
     return res.status(500).json({ error: 'Server configuration error' });
   }
 
   try {
     const razorpay = new Razorpay({
       key_id: process.env.RAZORPAY_KEY_ID,
-      key_secret: process.env.RAZORPAY_SECRET
+      key_secret: process.env.RAZORPAY_KEY_SECRET
     });
 
     const order = await razorpay.orders.create({
