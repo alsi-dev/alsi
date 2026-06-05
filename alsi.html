@@ -508,7 +508,7 @@ async function startPayment(plan, amount) {
   let order;
   try {
     setAllPlanBtnsLoading(true);
-    const res = await fetch(`${API_BASE}/api/create-order`, {
+    const res = await fetch(`/.netlify/functions/create-order`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({ plan })
