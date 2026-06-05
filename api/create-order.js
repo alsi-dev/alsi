@@ -1,4 +1,3 @@
-// api/create-order.js
 const Razorpay = require('razorpay');
 
 const PLANS = {
@@ -7,19 +6,34 @@ const PLANS = {
   Yearly:     { amount: 399900, days: 365 }
 };
 
-module.exports = async function handler(req, res) {
-  if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+exports.handler = async function(event, context) {
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS'
+      },
+      body: ''
+    };
+  }
 
-  const { plan } = req.body;
-
-  if (!PLANS[plan]) return res.status(400).json({ error: 'Invalid plan' });
+  if (event.httpMethod !== 'POST') {
+    return { statusCode: 405, body: JSON.stringify({ error: 'Method not allowed' }) };
+  }
 
   if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
-    return res.status(500).json({ error: 'Server configuration error' });
+    return { statusCode: 500, body: JSON.stringify({ error: 'Server configuration error' }) };
   }
 
   try {
+    const { plan } = JSON.parse(event.body);
+
+    if (!PLANS[plan]) {
+      return { statusCode: 400, body: JSON.stringify({ error: 'Invalid plan' }) };
+    }
+
     const razorpay = new Razorpay({
       key_id: process.env.RAZORPAY_KEY_ID,
       key_secret: process.env.RAZORPAY_KEY_SECRET
@@ -32,8 +46,24 @@ module.exports = async function handler(req, res) {
       notes: { plan, product: 'Alsi Pro' }
     });
 
-    return res.status(200).json({ order_id: order.id, amount: order.amount, currency: order.currency, plan });
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        order_id: order.id,
+        amount: order.amount,
+        currency: order.currency,
+        plan
+      })
+    };
   } catch (err) {
-    return res.status(500).json({ error: 'Failed to create payment order' });
+    return {
+      statusCode: 500,
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify({ error: 'Failed to create payment order' })
+    };
   }
 };
