@@ -228,7 +228,7 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
         <div class="paywall-logo-icon">✦</div>
         <div class="paywall-logo-text">Alsi Pro</div>
       </div>
-      <div class="paywall-title">You've used your 10 free messages</div>
+      <div class="paywall-title">You've used your 20 free messages</div>
       <p class="paywall-sub">Upgrade to <span>Alsi Pro</span> — unlimited messages, smarter responses, and all premium features.</p>
     </div>
 
@@ -242,7 +242,7 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
     <div class="compare-strip">
       <div class="compare-col">
         <div class="compare-col-title">Free</div>
-        <div class="compare-item"><span>✓</span> 10 messages total</div>
+        <div class="compare-item"><span>✓</span> 20 messages total</div>
         <div class="compare-item"><span>✓</span> Basic AI responses</div>
         <div class="compare-item" style="opacity:0.35"><span>✕</span> Unlimited messages</div>
         <div class="compare-item" style="opacity:0.35"><span>✕</span> Voice & file uploads</div>
@@ -515,7 +515,7 @@ async function startPayment(plan, amount) {
   let order;
   try {
     setAllPlanBtnsLoading(true);
-    const res = await fetch(`/.netlify/functions/create-order`, {
+    const res = await fetch('/api/create-order', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({ plan })
@@ -641,7 +641,7 @@ function addPaywallPromptInChat() {
   div.className = 'paywall-prompt';
   div.innerHTML = `
     <div class="paywall-prompt-icon">✦</div>
-    <h3>You've used all 10 free messages</h3>
+    <h3>You've used all 20 free messages</h3>
     <p>Upgrade to Alsi Pro for unlimited access — verified instantly via Razorpay.</p>
     <button class="paywall-prompt-btn" onclick="openPaywall()">Upgrade to Pro →</button>`;
   msgs.appendChild(div);
@@ -703,7 +703,7 @@ async function sendMessage() {
   addTyping();
 
   try {
-    const response = await fetch('/.netlify/functions/chat', {
+    const response = await fetch('/api/chat', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({
