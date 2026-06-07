@@ -355,7 +355,7 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
         <div class="topbar-sub">Always here to help</div>
       </div>
       <div class="topbar-right">
-        <div id="msg-counter-pill">10 free messages left</div>
+        <div id="msg-counter-pill">20 free messages left</div>
         <div id="pro-badge">✦ Alsi Pro</div>
         <div class="topbar-badge">✦ Alsi Pro</div>
       </div>
@@ -393,8 +393,15 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 // ══════════════════════════════════════
 const RAZORPAY_KEY = ['rzp', 'live', 'Sxv7aKVJsGUXS'].join('_'); // swap to rzp_live_ when going live
 const API_BASE = 'https://lively-crumble-agastya.netlify.app'; // ← UPDATE THIS after Vercel deploy
-const FREE_MSG_LIMIT = 10;
+const FREE_MSG_LIMIT = 20;
 
+// Daily reset logic
+const today = new Date().toDateString();
+const savedDate = localStorage.getItem('alsi_free_date');
+if (savedDate !== today) {
+  localStorage.setItem('alsi_free_date', today);
+  localStorage.setItem('alsi_free_used', '0');
+}
 const SYSTEM_PROMPT = `You are Alsi, a warm, clever, and highly capable AI assistant created for alsi.com. 
 You are helpful, friendly, and direct. You provide thoughtful, well-structured responses. 
 Keep responses concise but complete. Use natural language — no unnecessary bullet lists unless the content truly calls for it.
