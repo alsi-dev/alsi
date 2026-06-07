@@ -521,7 +521,7 @@ async function startPayment(plan, amount) {
       body:    JSON.stringify({ plan })
     });
     order = await res.json();
-    if (!order.order_id) throw new Error('No order ID returned');
+    if (!order.id) throw new Error('No order ID returned');
   } catch (err) {
     setAllPlanBtnsLoading(false);
     showToast('⚠️ Could not create order. Please try again.');
@@ -538,7 +538,7 @@ async function startPayment(plan, amount) {
     currency:    'INR',
     name:        'Alsi AI',
     description: `Alsi Pro — ${plan} Plan`,
-    order_id:    order.order_id,
+    order_id:    order.id,
     prefill:     { email: email || '' },
     theme:       { color: '#00d4ff' },
     handler: async function(response) {
