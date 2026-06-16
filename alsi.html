@@ -744,7 +744,7 @@ async function sendMessage() {
   isThinking  = true;
   document.getElementById('send-btn').disabled = true;
 
-addMessage('user', text || '📷 Image');
+addMessage('user', text || '📷 Image', attachedImageBase64);
 if (attachedImageBase64) {
   conversationHistory.push({ role: 'user', content: [
     { type: 'image_url', image_url: { url: attachedImageBase64 } },
