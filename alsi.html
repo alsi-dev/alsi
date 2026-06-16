@@ -397,7 +397,8 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
           <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
       </div>
-      <div class="input-hint">Alsi may make mistakes. Always verify important information.</div>
+      <img id="image-preview-thumb" style="display:none; width:40px; height:40px; border-radius:8px; object-fit:cover; margin-right:8px;">
+<div class="input-hint">Alsi may make mistakes. Always verify important information.</div>
     </div>
   </main>
 </div>
@@ -719,6 +720,9 @@ function toggleAttachMenu() {
         attachedImageBase64 = canvas.toDataURL('image/jpeg', 0.8);
         const hint = document.querySelector('.input-hint');
         hint.textContent = 'Image attached: ' + file.name;
+        const previewImg = document.getElementById('image-preview-thumb');
+previewImg.src = attachedImageBase64;
+previewImg.style.display = 'inline-block';
       };
       img.src = e.target.result;
     };
@@ -775,6 +779,7 @@ if (attachedImageBase64) {
 
     const data  = await response.json();
     removeTyping();attachedImageBase64 = null;
+    document.getElementById('image-preview-thumb').style.display = 'none';
       document.querySelector('.input-hint').textContent = 'Alsi may make mistakes. Always verify important information.';
     const reply = data.content|| 'Sorry, I could not generate a response.';
     conversationHistory.push({ role: 'assistant', content: reply });
