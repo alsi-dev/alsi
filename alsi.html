@@ -638,13 +638,13 @@ function hideWelcome() {
   if (w) { w.style.opacity = '0'; w.style.transition = 'opacity 0.3s'; setTimeout(() => w.remove(), 300); }
 }
 
-function addMessage(role, text) {
+function addMessage(role, text, imageBase64) {
   hideWelcome();
   const msgs = document.getElementById('messages');
   const div  = document.createElement('div');
   div.className = `msg ${role}`;
-  const avatar  = role === 'ai' ? `<div class="avatar avatar-ai">A</div>` : `<div class="avatar avatar-user">👤</div>`;
-  div.innerHTML = `${avatar}<div class="bubble">${formatText(text)}</div>`;
+  const avatar  = role === 'ai' ? `<div class="avatar avatar-ai">A</div>` : `<div class="avatar avatar-user">👤</div>`;const imageHtml = imageBase64 ? `<img src="${imageBase64}" class="msg-image">` : '';
+  div.innerHTML = `${avatar}<div class="bubble">${imageHtml}${formatText(text)}</div>`;
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
   return div;
