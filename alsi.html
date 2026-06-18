@@ -649,6 +649,19 @@ function handleKey(e) {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 }
 
+function toggleTheme() {
+  const body = document.body;
+  const btn = document.getElementById('theme-toggle');
+  body.classList.toggle('light-mode');
+  const isLight = body.classList.contains('light-mode');
+  btn.textContent = isLight ? '☀️ Light' : '🌙 Dark';
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+}
+if (localStorage.getItem('theme') === 'light') {
+  document.body.classList.add('light-mode');
+  document.getElementById('theme-toggle').textContent = '☀️ Light';
+}
+
 function hideWelcome() {
   const w = document.getElementById('welcome-screen');
   if (w) { w.style.opacity = '0'; w.style.transition = 'opacity 0.3s'; setTimeout(() => w.remove(), 300); }
