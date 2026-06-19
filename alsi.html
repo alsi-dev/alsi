@@ -825,7 +825,7 @@ if (attachedImageBase64) {
           document.getElementById('send-btn').disabled      = true;
         }, 400);
       }
-    }}catch(counterErr){console.error('Counter update failed:',counterErr);}
+    }catch(counterErr){console.error('Counter update failed:',counterErr);}}
 
   } catch (err) {
     removeTyping();
