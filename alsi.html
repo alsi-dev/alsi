@@ -812,7 +812,7 @@ if (attachedImageBase64) {
     conversationHistory.push({ role: 'assistant', content: reply });
     addMessage('ai', reply);
 
-    if (!isPro) {
+    if (!isPro) {try{
       freeMessagesUsed++;
       localStorage.setItem('alsi_free_used', freeMessagesUsed);
       updateCounter();
@@ -825,7 +825,7 @@ if (attachedImageBase64) {
           document.getElementById('send-btn').disabled      = true;
         }, 400);
       }
-    }
+    }}catch(counterErr){console.error('Counter update failed:',counterErr);}
 
   } catch (err) {
     removeTyping();
