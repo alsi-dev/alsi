@@ -677,7 +677,7 @@ function addMessage(role, text, imageBase64) {
   const div  = document.createElement('div');
   div.className = `msg ${role}`;
   const avatar  = role === 'ai' ? `<div class="avatar avatar-ai">A</div>` : `<div class="avatar avatar-user">👤</div>`;const imageHtml = imageBase64 ? `<img src="${imageBase64}" class="msg-image">` : '';
-  div.innerHTML = `${avatar}<div class="bubble">${imageHtml}${formatText(text)}</div>${role === 'ai' ? `<div class="msg-actions"><button onclick="navigator.clipboard.writeText(this.closest('.msg').querySelector('.bubble').innerText);this.textContent='✓'" title="Copy">⧉</button><button class="vote-btn" onclick="this.classList.toggle('active')" title="Good response">👍</button><button class="vote-btn" onclick="this.classList.toggle('active')" title="Bad response">👎</button></div>` : ''}`;
+  div.innerHTML = `${avatar}<div class="bubble">${imageHtml}${formatText(text)}</div>${role === 'ai' ? `<div class="msg-actions"><button onclick="navigator.clipboard.writeText(this.closest('.msg').querySelector('.bubble').innerText);this.textContent='✓'" title="Copy">⧉</button><button class="vote-btn" onclick="this.classList.toggle('active')" title="Good response">👍</button><button class="vote-btn" onclick="this.classList.toggle('active')" title="Bad response">👎</button><button onclick="navigator.share({title:'Alsi',text:this.closest('.msg').querySelector('.bubble').innerText})" title="Share">📤</button></div>` : ''}`;
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
   return div;
