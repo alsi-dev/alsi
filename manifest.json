@@ -1,10 +1,14 @@
 {
+  "id": "/alsi.html",
   "name": "Alsi - Your AI Companion",
   "short_name": "Alsi",
+  "description": "Alsi is your intelligent AI companion for chat, ideas, and everyday help — built for India with Hindi, Hinglish, and English support.",
   "start_url": "/alsi.html",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#04050a",
   "theme_color": "#0a0e1a",
+  "categories": ["productivity", "utilities", "social"],
   "icons": [
     {
       "src": "/icon-192.png",
