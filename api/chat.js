@@ -8,14 +8,15 @@ const supabase = createClient(
 const CACHE_HOURS = 6;
 
 function needsSearch(messages) {
-  const lastMessage = messages[messages.length - 1]?.content || '';
+  const lastMessage = messages[messages.length - 1]?.content;
+  const lastText = typeof lastMessage === 'string' ? lastMessage : '';
   const triggers = [
     'date', 'when is', 'current', 'today', 'latest', 'price of',
     'who is', 'how many', 'news', 'score', 'weather', 'exchange rate',
     'amavasya', 'purnima', 'ekadashi', 'tithi', 'panchang', 'holiday',
     'kab hai', 'aaj', 'abhi'
   ];
-  const lower = lastMessage.toLowerCase();
+  const lower = lastText.toLowerCase();
   return triggers.some(t => lower.includes(t));
 }
 
