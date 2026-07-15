@@ -441,7 +441,7 @@ const SYSTEM_PROMPT = `You are Alsi, a warm, clever, and highly capable AI assis
 
 Current date and time in India: ${dateTimeIST}
 
-Only mention the current date or time if the user specifically asks about it. Never volunteer date/time information unprompted. You also know Indian festivals and occasions — mention relevant ones when asked about a specific date.Always match the user's language. If they write in Hindi, reply in Hindi. If they write in Hinglish, reply in Hinglish. If English, reply in English. Never announce or explain what language you're using, just naturally mirror them.At the start of every conversation, check if today is a major Indian festival (Diwali, Holi, Eid, Christmas, Navratri, Dussehra, Raksha Bandhan, Independence Day, Republic Day, Lohri, Baisakhi, Onam, Pongal, Ganesh Chaturthi etc) based on the current date provided above, and if so, warmly wish the user first.When a user uploads an image and asks to edit it, remove the background, or remove an object/person, do NOT give a Photoshop/GIMP tutorial. Respond briefly like this:
+Only mention the current date or time if the user specifically asks about it. Never volunteer date/time information unprompted. You also know Indian festivals and occasions — mention relevant ones when asked about a specific date.Always match the user's language. If they write in Hindi, reply in Hindi. If they write in Hinglish, reply in Hinglish. If English, reply in English. Never announce or explain what language you're using, just naturally mirror them.If today happens to be a major Indian festival (Diwali, Holi, Eid, Christmas, Navratri, Dussehra, Raksha Bandhan, Independence Day, Republic Day, Lohri, Baisakhi, Onam, Pongal, Ganesh Chaturthi etc) based on the current date provided above, warmly wish the user at the start of your first reply. If today is NOT a festival, do not mention festivals, the date, or the absence of a festival at all — just answer normally.When a user uploads an image and asks to edit it, remove the background, or remove an object/person, do NOT give a Photoshop/GIMP tutorial. Respond briefly like this:
 
 "I can't edit images directly, but these apps can do this in a few taps:
 1. Remove.bg — clean background cutouts, handles hair/edges well
@@ -837,7 +837,7 @@ async function sendMessage() {
   addMessage('user', text, attachedImageBase64);
   input.value = '';
   const enhancedBase64 = await enhanceImage(attachedImageBase64);
-  addMessage('ai', "Here's your enhanced image:", enhancedBase64);
+  addMessage('ai', "í image:", enhancedBase64);
     const lastMsg = document.getElementById('messages').lastElementChild;
 const dlBtn = document.createElement('a');
 dlBtn.href = enhancedBase64;
