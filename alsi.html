@@ -441,7 +441,19 @@ const SYSTEM_PROMPT = `You are Alsi, a warm, clever, and highly capable AI assis
 
 Current date and time in India: ${dateTimeIST}
 
-Only mention the current date or time if the user specifically asks about it. Never volunteer date/time information unprompted. You also know Indian festivals and occasions — mention relevant ones when asked about a specific date.Always match the user's language. If they write in Hindi, reply in Hindi. If they write in Hinglish, reply in Hinglish. If English, reply in English. Never announce or explain what language you're using, just naturally mirror them.At the start of every conversation, check if today is a major Indian festival (Diwali, Holi, Eid, Christmas, Navratri, Dussehra, Raksha Bandhan, Independence Day, Republic Day, Lohri, Baisakhi, Onam, Pongal, Ganesh Chaturthi etc) based on the current date provided above, and if so, warmly wish the user first.`;
+Only mention the current date or time if the user specifically asks about it. Never volunteer date/time information unprompted. You also know Indian festivals and occasions — mention relevant ones when asked about a specific date.Always match the user's language. If they write in Hindi, reply in Hindi. If they write in Hinglish, reply in Hinglish. If English, reply in English. Never announce or explain what language you're using, just naturally mirror them.At the start of every conversation, check if today is a major Indian festival (Diwali, Holi, Eid, Christmas, Navratri, Dussehra, Raksha Bandhan, Independence Day, Republic Day, Lohri, Baisakhi, Onam, Pongal, Ganesh Chaturthi etc) based on the current date provided above, and if so, warmly wish the user first.When a user uploads an image and asks to edit it, remove the background, or remove an object/person, do NOT give a Photoshop/GIMP tutorial. Respond briefly like this:
+
+"I can't edit images directly, but these apps can do this in a few taps:
+1. Remove.bg — clean background cutouts, handles hair/edges well
+2. Clipdrop — background removal + object/person cleanup
+3. PhotoRoom — great for product/portrait shots (mobile-first)
+4. Pixlr — free, no watermark, browser + app
+5. CapCut — best for removing people/objects specifically
+6. Adobe Express — free background remover + general edits
+
+Just upload your photo there and it's usually done in under a minute."
+
+Keep the reply to the list plus 1-2 lines, nothing more. Never suggest desktop-only software like Photoshop or GIMP as the primary answer.`;
 
 // ══════════════════════════════════════
 // STATE
@@ -761,6 +773,50 @@ previewImg.style.display = 'inline-block';
     };
     reader.readAsDataURL(file);
     }
+  function enhanceImage(base64Image) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.filter = 'brightness(1.08) contrast(1.15) saturate(1.2)';
+      ctx.drawImage(img, 0, 0);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const sharpened = applySharpen(imageData, canvas.width, canvas.height);
+      ctx.putImageData(sharpened, 0, 0);
+      resolve(canvas.toDataURL('image/jpeg', 0.92));
+    };
+    img.onerror = reject;
+    img.src = base64Image;
+  });
+}
+
+function applySharpen(imageData, width, height) {
+  const weights = [0, -1, 0, -1, 5, -1, 0, -1, 0];
+  const src = imageData.data;
+  const out = new Uint8ClampedArray(src.length);
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const dstOff = (y * width + x) * 4;
+      let r = 0, g = 0, b = 0;
+      for (let cy = 0; cy < 3; cy++) {
+        for (let cx = 0; cx < 3; cx++) {
+          const scy = Math.min(height - 1, Math.max(0, y + cy - 1));
+          const scx = Math.min(width - 1, Math.max(0, x + cx - 1));
+          const srcOff = (scy * width + scx) * 4;
+          const wt = weights[cy * 3 + cx];
+          r += src[srcOff] * wt;
+          g += src[srcOff + 1] * wt;
+          b += src[srcOff + 2] * wt;
+        }
+      }
+      out[dstOff] = r; out[dstOff+1] = g; out[dstOff+2] = b; out[dstOff+3] = src[dstOff+3];
+    }
+  }
+  return new ImageData(out, width, height);
+}
 function sendStarter(card) {
   document.getElementById('chat-input').value = card.querySelector('.q').textContent;
   sendMessage();
@@ -777,6 +833,15 @@ async function sendMessage() {
   const input = document.getElementById('chat-input');
   const text  = input.value.trim();
   if (!text && !attachedImageBase64) return;
+  if (attachedImageBase64 && /enhance|improve quality|sharpen/i.test(text)) {
+  addMessage('user', text, attachedImageBase64);
+  input.value = '';
+  const enhancedBase64 = await enhanceImage(attachedImageBase64);
+  addMessage('ai', "Here's your enhanced image:", enhancedBase64);
+  attachedImageBase64 = null;
+  document.getElementById('image-preview-thumb').style.display = 'none';
+  return;
+  }
 
   input.value = ''; input.style.height = 'auto';
   isThinking  = true;
