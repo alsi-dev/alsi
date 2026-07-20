@@ -97,22 +97,25 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
       },
-      body: JSON.stringify({
-        model: (() => {
-  const hasImage = messages.some(m =>
-    Array.isArray(m.content) &&
-    m.content.some(part => part.type === 'image_url')
-  );
-  return hasImage ? 'qwen/qwen3.6-27b' : 'llama-3.3-70b-versatile';
-})(),
-        messages: [
-          { role: 'system', content: systemContent },
-          ...messages
-        ],
-        max_tokens: 1024,
-      reasoning_effort: 'none'
-      })
-    });
+      body: JSON.stringify((() => {
+          const hasImage = messages.some(m =>
+            Array.isArray(m.content) &&
+            m.content.some(part => part.type === 'image_url')
+          );
+          const payload = {
+            model: hasImage ? 'qwen/qwen3.6-27b' : 'llama-3.3-70b-versatile',
+            messages: [
+              { role: 'system', content: systemContent },
+              ...messages
+            ],
+            max_tokens: 1024
+          };
+          if (hasImage) {
+            payload.reasoning_effort = 'none';
+          }
+          return payload;
+        })())
+      });
 
     const data = await response.json();
     const rawContent = data.choices[0].message.content;
