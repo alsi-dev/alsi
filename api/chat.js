@@ -98,7 +98,13 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'meta-llama/llama-4-scout-17b-16e-instruct',
+        model: (() => {
+  const hasImage = messages.some(m =>
+    Array.isArray(m.content) &&
+    m.content.some(part => part.type === 'image_url')
+  );
+  return hasImage ? 'qwen/qwen3.6-27b' : 'llama-3.3-70b-versatile';
+})(),
         messages: [
           { role: 'system', content: systemContent },
           ...messages
