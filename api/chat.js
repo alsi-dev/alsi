@@ -109,12 +109,15 @@ export default async function handler(req, res) {
           { role: 'system', content: systemContent },
           ...messages
         ],
-        max_tokens: 1024
+        max_tokens: 1024,
+      reasoning_effort: 'none'
       })
     });
 
     const data = await response.json();
-    return res.status(200).json({ content: data.choices[0].message.content });
+    const rawContent = data.choices[0].message.content;
+const cleanContent = rawContent.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+return res.status(200).json({ content: cleanContent });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
