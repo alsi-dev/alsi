@@ -118,7 +118,11 @@ export default async function handler(req, res) {
       });
 
     const data = await response.json();
-    const rawContent = data.choices[0].message.content;
+    if (!response.ok || !data.choices) {
+  console.error('Groq API error:', JSON.stringify(data));
+  return res.status(500).json({ error: data.error?.message || 'Groq request failed' });
+}
+const rawContent = data.choices[0].message.content;
 const cleanContent = rawContent.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
 return res.status(200).json({ content: cleanContent });
   } catch (err) {
