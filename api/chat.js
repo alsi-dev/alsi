@@ -103,7 +103,7 @@ export default async function handler(req, res) {
             m.content.some(part => part.type === 'image_url')
           );
           const payload = {
-            model: hasImage ? 'qwen/qwen3.6-27b' : 'llama-3.3-70b-versatile',
+            model: hasImage ? 'qwen/qwen3.6-27b' : 'openai/gpt-oss-120b',
             messages: [
               { role: 'system', content: systemContent },
               ...messages
