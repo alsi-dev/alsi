@@ -1,0 +1,1 @@
+[{"relation": ["delegate_permission/common.handle_all_urls"],"target": {"namespace": "android_app","package_name": "app.vercel.alsi.twa","sha256_cert_fingerprints": ["9E:6F:43:2B:B0:A5:5E:15:C0:0B:69:01:E7:0C:24:14:1D:1D:EA:C4:86:02:94:2A:82:A6:A6:D4:C1:FE:CC:73"]}}]
