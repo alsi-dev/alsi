@@ -103,13 +103,16 @@ export default async function handler(req, res) {
             m.content.some(part => part.type === 'image_url')
           );
           const payload = {
-            model: hasImage ? 'meta-llama/llama-4-scout-17b-16e-instruct' : 'llama-3.3-70b-versatile',
+            model: hasImage ? 'qwen/qwen3.6-27b' : 'openai/gpt-oss-120b',
             messages: [
               { role: 'system', content: systemContent },
               ...messages
             ],
             max_tokens: 1024
           };
+        if (hasImage) {
+  payload.reasoning_effort = 'none';
+        }
           return payload;
         })())
       });
